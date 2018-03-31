@@ -35,6 +35,9 @@ rownames(counts_data) <- count_listdf[[1]]$V1
 colnames(counts_data) <- gsub(".count","",unlist(filelist))
 ########reorder column names according to coldata#####
 reordered_counts <- counts_data[mycoldata$sample_name]
+sub_counts <- reordered_counts[grep("ENSMUSG",rownames(reordered_counts)),]
+counts_data <- as.matrix(sub_counts)
+dds <- DESeqDataSetFromMatrix(countData = counts_data,colData = coldata,design = ~age + condition)
 
 
 
