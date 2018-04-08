@@ -67,7 +67,7 @@ p.adjusted <- function(pvals,method=c("SLIM","holm","hochberg","hommel",
 BSobj_sample2_vs_sample1 <- makeBSseqData(list(Sample1_rep1,Sample1_rep2,Sample2_rep1,Sample2_rep2),c("C1","C2", "N1", "N2"))
 dmltest <- DMLtest(BSobj_sample2_vs_sample1,group1=c("C1", "C2"), group2=c("N1", "N2"),smoothing=T)
 dmls <- callDML(dmltest, delta=0.2, p.threshold=1e-5)
-dmls$qvalue=p.adjusted(dmls$pvalue,method="bonferroni")
+dmls$qvalue <- p.adjusted(dmls$pvalue,method="bonferroni")
 dmrs <- callDMR(dmltest, p.threshold=1e-5,minlen=50,minCG=3)
 dmrs$qvalue <- p.adjusted(dmrs$pvalue,method="bonferroni")
 write.table(dmls,file=output_DML_file,sep="\t", col.names = T, row.names = F,quote=F)
