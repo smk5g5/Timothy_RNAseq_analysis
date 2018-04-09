@@ -34,7 +34,7 @@ Sample1_rep1 <- modify_for_DSS(S1_R1,classes)
 Sample1_rep2 <- modify_for_DSS(S1_R2,classes)
 
 Sample2_rep1 <- modify_for_DSS(S2_R1,classes)
-Sample2_rep2 <- modify_for_DSS(S2_R1,classes)
+Sample2_rep2 <- modify_for_DSS(S2_R2,classes)
 
 p.adjusted <- function(pvals,method=c("SLIM","holm","hochberg","hommel",
                                       "bonferroni","BH","BY","fdr","none","qvalue"),
