@@ -5,7 +5,7 @@ x <- org.Mm.egCHR
 mapped_genes <- mappedkeys(x)
 pathway_enrichment <- function(dmr_input,tiffout,rdatafile,sig_path){
 annotated_dmr <- read.table(dmr_input,header = T,sep = "\t")
-subset_annot <- annotated_dmr[,c("annot.id","annot.tx_id","annot.gene_id","annot.symbol","meanMethy1","meanMethy2","diff.Methy")]
+subset_annot <- subset(annotated_dmr, annotated_dmr$`annot.type` == 'mm10_genes_promoters',select=c("annot.id","annot.tx_id","annot.gene_id","annot.symbol","meanMethy1","meanMethy2","diff.Methy"))
 subse_annot_omit <- na.omit(subset_annot[,c("annot.gene_id","meanMethy1","meanMethy2","diff.Methy")])
 unique_df <- unique(subse_annot_omit)
 aggregate_bygene_df <- aggregate(unique_df,by=list(unique_df$`annot.gene_id`),FUN = "mean")
@@ -37,7 +37,6 @@ tiff(tiff_map, width = 20, height = 10, units = 'in', res = 300)
 print(enrichMap(ego))
 dev.off()
 save(subset_aggdf,aggregate_bygene_df, ego,kk, file = rdatafile)
-return(ego)
 }
 browseKEGG(kk,'mmu05225')
 genelist <- unique_df$fc
