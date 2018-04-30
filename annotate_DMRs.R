@@ -1,3 +1,4 @@
+library(annotatr)
 all_annots <- builtin_annotations()
 allmm10_annots_indices <- grep("mm10",builtin_annotations())
 allmm10_annots <- all_annots[allmm10_annots_indices]
@@ -12,7 +13,10 @@ mouse_annotations = build_annotations(genome = 'mm10', annotations = sel_mm10_an
 annotate_DMRs <- function(dm_file,outdmfile){
 #chr     start       end length nCG meanMethy1 meanMethy2 diff.Methy  areaStat
 extraCols = c(length = 'integer', nCG = 'integer', meanMethy1 = 'numeric',meanMethy2='numeric',diff.Methy="numeric",areaStat="numeric")
-dm_regions = read_regions(con = dm_file, genome = 'mm10', extraCols = extraCols, format = 'bed')
+pdplus_vs_minus_dml <- read.table(dm_file,header = T,sep = "\t")
+myfile<- paste("temp_",dm_file,sep='')
+write.table(x = pdplus_vs_minus_dml,file = myfile,sep = "\t",row.names = F,col.names=F,quote = F)
+dm_regions = read_regions(con = myfile, genome = 'mm10', extraCols = extraCols, format = 'bed')
 dm_annotated = annotate_regions(
     regions = dm_regions,
     annotations = mouse_annotations,
@@ -20,6 +24,7 @@ dm_annotated = annotate_regions(
     quiet = FALSE)
 df_dm_annotated = data.frame(dm_annotated)
 write.table(x = df_dm_annotated,file = outdmfile,sep = "\t",row.names = F,quote = F)
+if (file.exists(myfile)) file.remove(myfile)
 }
 
             #      chr                    pos                    mu1                    mu2 
@@ -45,6 +50,7 @@ dm_annotated = annotate_regions(
     quiet = FALSE)
 df_dm_annotated = data.frame(dm_annotated)
 write.table(x = df_dm_annotated,file = outdmlfile,sep = "\t",row.names = F,quote = F)
+if (file.exists(myfile)) file.remove(myfile)
 }
 # chr	pos	mu1	mu2	diff	diff.se	stat	phi1	phi2	pval	fdr	postprob.overThreshold
 
